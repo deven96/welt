@@ -29,7 +29,7 @@ func (e Evaluator) evaluateExpression(node binding.BoundExpression) interface{} 
 	if isUnaryExpression {
 		operand := e.evaluateExpression(uroot.Operand)
 
-		switch uroot.OperatorKind {
+		switch uroot.Operator.Kind {
 		case binding.Identity:
 			return operand.(int)
 		case binding.Negation:
@@ -37,7 +37,7 @@ func (e Evaluator) evaluateExpression(node binding.BoundExpression) interface{} 
 		case binding.LogicalNegation:
 			return !operand.(bool)
 		default:
-			panic(fmt.Sprintf("Unexpected unary operator %s", uroot.OperatorKind))
+			panic(fmt.Sprintf("Unexpected unary operator %s", uroot.Operator.Kind))
 		}
 	}
 
@@ -46,7 +46,7 @@ func (e Evaluator) evaluateExpression(node binding.BoundExpression) interface{} 
 		left := e.evaluateExpression(broot.Left)
 		right := e.evaluateExpression(broot.Right)
 
-		operatorKind := broot.OperatorKind
+		operatorKind := broot.Operator.Kind
 
 		switch operatorKind {
 		case binding.Addition:
