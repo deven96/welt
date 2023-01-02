@@ -23,7 +23,7 @@ const (
 	CloseParenthesisToken
 
 	// Expressions
-	NumberExpression
+	LiteralExpression
 	BinaryExpression
 	ParenthesisedExpression
 )
@@ -48,8 +48,8 @@ func (i SyntaxKind) String() string {
 		return "CloseParenthesis"
 	case BinaryExpression:
 		return "BinaryExpression"
-	case NumberExpression:
-		return "NumberExpression"
+	case LiteralExpression:
+		return "LiteralExpression"
 	case ParenthesisedExpression:
 		return "ParenthesisedExpression"
 	case NewLineToken:

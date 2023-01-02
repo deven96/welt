@@ -14,7 +14,7 @@ type LiteralExpressionSyntax struct {
 }
 
 func (es LiteralExpressionSyntax) Kind() SyntaxKind {
-	return NumberExpression
+	return LiteralExpression
 }
 
 func (es LiteralExpressionSyntax) Children() []SyntaxNode {
