@@ -49,3 +49,16 @@ func (es ParenthesisedExpressionSyntax) Kind() SyntaxKind {
 func (es ParenthesisedExpressionSyntax) Children() []SyntaxNode {
 	return []SyntaxNode{es.OpenParenthesisToken, es.Expression, es.CloseParenthesisToken}
 }
+
+type UnaryExpressionSyntax struct {
+	Operator SyntaxToken
+	Operand  ExpressionSyntax
+}
+
+func (es UnaryExpressionSyntax) Kind() SyntaxKind {
+	return UnaryExpression
+}
+
+func (es UnaryExpressionSyntax) Children() []SyntaxNode {
+	return []SyntaxNode{es.Operator, es.Operand}
+}

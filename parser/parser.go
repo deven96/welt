@@ -69,7 +69,18 @@ func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
 }
 
 func (p *Parser) parseExpression(parentPrecendence int) ExpressionSyntax {
-	left := p.parsePrimaryExpression()
+	var left ExpressionSyntax
+	unaryOperatorPrecedence := p.Current().Kind().getUnaryOperatorPrecedence()
+	if unaryOperatorPrecedence != 0 && unaryOperatorPrecedence >= parentPrecendence {
+		operator := p.NextToken()
+		operand := p.parseExpression(unaryOperatorPrecedence)
+		left = UnaryExpressionSyntax{
+			Operator: operator,
+			Operand:  operand,
+		}
+	} else {
+		left = p.parsePrimaryExpression()
+	}
 	for {
 		precedence := p.Current().Kind().getBinaryOperatorPrecedence()
 		if precedence == 0 || precedence <= parentPrecendence {

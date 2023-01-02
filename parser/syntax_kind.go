@@ -26,6 +26,7 @@ const (
 	LiteralExpression
 	BinaryExpression
 	ParenthesisedExpression
+	UnaryExpression
 )
 
 func (i SyntaxKind) String() string {
@@ -50,6 +51,8 @@ func (i SyntaxKind) String() string {
 		return "BinaryExpression"
 	case LiteralExpression:
 		return "LiteralExpression"
+	case UnaryExpression:
+		return "UnaryExpression"
 	case ParenthesisedExpression:
 		return "ParenthesisedExpression"
 	case NewLineToken:
@@ -68,6 +71,15 @@ func (kind SyntaxKind) getBinaryOperatorPrecedence() int {
 		return 2
 	case PlusToken, MinusToken:
 		return 1
+	default:
+		return 0
+	}
+}
+
+func (kind SyntaxKind) getUnaryOperatorPrecedence() int {
+	switch kind {
+	case PlusToken, MinusToken:
+		return 3
 	default:
 		return 0
 	}

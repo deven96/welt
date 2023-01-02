@@ -25,6 +25,20 @@ func (e Evaluator) evaluateExpression(node parser.ExpressionSyntax) int {
 	if isLiteralExpression {
 		return nroot.LiteralToken.Value.(int)
 	}
+	uroot, isUnaryExpression := node.(parser.UnaryExpressionSyntax)
+	if isUnaryExpression {
+		operand := e.evaluateExpression(uroot.Operand)
+
+		switch uroot.Operator.Kind() {
+		case parser.PlusToken:
+			return operand
+		case parser.MinusToken:
+			return -operand
+		default:
+			panic(fmt.Sprintf("Unexpected unary operator %s", uroot.Operator.Kind()))
+		}
+	}
+
 	broot, isBinaryExpression := node.(parser.BinaryExpressionSyntax)
 	if isBinaryExpression {
 		left := e.evaluateExpression(broot.Left)
