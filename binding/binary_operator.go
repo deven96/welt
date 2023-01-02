@@ -54,7 +54,7 @@ func binaryOperations() []boundBinaryOperator {
 	operators := []boundBinaryOperator{
 		{syntax.PlusToken, Addition, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
 		{syntax.MinusToken, Addition, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
-		{syntax.StarToken, Addition, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
+		{syntax.StarToken, Multiplication, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
 		{syntax.ForwardSlashToken, Addition, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
 		{syntax.DoubleAmpersandToken, LogicalAnd, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
 		{syntax.DoublePipeToken, LogicalOr, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
