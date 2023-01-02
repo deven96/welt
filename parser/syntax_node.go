@@ -9,17 +9,17 @@ type ExpressionSyntax interface {
 	SyntaxNode
 }
 
-type NumberExpressionSyntax struct {
-	Token SyntaxToken
+type LiteralExpressionSyntax struct {
+	LiteralToken SyntaxToken
 }
 
-func (es NumberExpressionSyntax) Kind() SyntaxKind {
+func (es LiteralExpressionSyntax) Kind() SyntaxKind {
 	return NumberExpression
 }
 
-func (es NumberExpressionSyntax) Children() []SyntaxNode {
+func (es LiteralExpressionSyntax) Children() []SyntaxNode {
 	// SyntaxToken fulfills the SyntaxNode interface
-	return []SyntaxNode{es.Token}
+	return []SyntaxNode{es.LiteralToken}
 }
 
 type BinaryExpressionSyntax struct {

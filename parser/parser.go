@@ -10,7 +10,7 @@ type Parser struct {
 
 func NewParser(text string) Parser {
 	p := Parser{}
-	lexer := Lexer{Text: text}
+	lexer := lexer{Text: text}
 	tokens := []SyntaxToken{}
 	for {
 		token := lexer.NextToken()
@@ -32,7 +32,7 @@ func (p *Parser) NextToken() SyntaxToken {
 	return current
 }
 
-func (p *Parser) match(kind SyntaxKind) SyntaxToken {
+func (p *Parser) matchToken(kind SyntaxKind) SyntaxToken {
 	if p.Current().Kind_ == kind {
 		return p.NextToken()
 	}
@@ -43,19 +43,29 @@ func (p *Parser) match(kind SyntaxKind) SyntaxToken {
 	}
 }
 
+func (p *Parser) Parse() SyntaxTree {
+	expression := p.parseTerm()
+	endOfFileToken := p.matchToken(EndOfFileToken)
+	return SyntaxTree{
+		diagnostics:    p.diagnostics,
+		Root:           expression,
+		endOfFileToken: endOfFileToken,
+	}
+}
+
 func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
 	if p.Current().Kind() == OpenParenthesisToken {
 		left := p.NextToken()
 		expression := p.parseTerm()
-		right := p.match(CloseParenthesisToken)
+		right := p.matchToken(CloseParenthesisToken)
 		return ParenthesisedExpressionSyntax{
 			OpenParenthesisToken:  left,
 			Expression:            expression,
 			CloseParenthesisToken: right,
 		}
 	}
-	numberToken := p.match(NumberToken)
-	return NumberExpressionSyntax{Token: numberToken}
+	numberToken := p.matchToken(NumberToken)
+	return LiteralExpressionSyntax{LiteralToken: numberToken}
 }
 
 func (p *Parser) parseTerm() ExpressionSyntax {
@@ -84,16 +94,6 @@ func (p *Parser) parseFactor() ExpressionSyntax {
 		}
 	}
 	return left
-}
-
-func (p *Parser) Parse() SyntaxTree {
-	expression := p.parseTerm()
-	endOfFileToken := p.match(EndOfFileToken)
-	return SyntaxTree{
-		diagnostics:    p.diagnostics,
-		Root:           expression,
-		endOfFileToken: endOfFileToken,
-	}
 }
 
 func (p Parser) Peek(offset int) SyntaxToken {

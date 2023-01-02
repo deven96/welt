@@ -5,25 +5,25 @@ import (
 	"strconv"
 )
 
-type Lexer struct {
+type lexer struct {
 	Text        string
 	position    int
 	diagnostics []string
 }
 
-func (lex Lexer) current() string {
+func (lex lexer) current() string {
 	if lex.position >= len(lex.Text) {
 		return `\0`
 	}
 	return string(lex.Text[lex.position])
 }
 
-func (lex *Lexer) next() {
+func (lex *lexer) next() {
 	lex.position++
 }
 
 // NextToken : reads in the next token needed
-func (lex *Lexer) NextToken() SyntaxToken {
+func (lex *lexer) NextToken() SyntaxToken {
 	// + - * /
 	// numbers
 	// <whitespace>

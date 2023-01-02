@@ -33,9 +33,9 @@ func prettyPrint(printer PrettyPrint) {
 	fmt.Println()
 
 	if printer.isLast {
-		printer.indent += `    `
+		printer.indent += `   `
 	} else {
-		printer.indent += `|   `
+		printer.indent += `|  `
 	}
 
 	children := printer.node.Children()

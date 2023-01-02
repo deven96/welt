@@ -21,9 +21,9 @@ func (e Evaluator) Evaluate() int {
 }
 
 func (e Evaluator) evaluateExpression(node parser.ExpressionSyntax) int {
-	nroot, isNumberExpression := node.(parser.NumberExpressionSyntax)
+	nroot, isNumberExpression := node.(parser.LiteralExpressionSyntax)
 	if isNumberExpression {
-		return nroot.Token.Value.(int)
+		return nroot.LiteralToken.Value.(int)
 	}
 	broot, isBinaryExpression := node.(parser.BinaryExpressionSyntax)
 	if isBinaryExpression {

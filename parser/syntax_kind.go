@@ -3,17 +3,26 @@ package parser
 type SyntaxKind int64
 
 const (
-	NumberToken SyntaxKind = iota
+	// Special Tokens
+	NewLineToken SyntaxKind = iota
+	EndOfFileToken
 	WhitespaceToken
+	BadToken
+
+	// Number Token
+	NumberToken
+
+	// Arithmetric Token
 	PlusToken
 	MinusToken
 	StarToken
 	ForwardSlashToken
+
+	// Parenthesis Tokens
 	OpenParenthesisToken
 	CloseParenthesisToken
-	NewLineToken
-	EndOfFileToken
-	BadToken
+
+	// Expressions
 	NumberExpression
 	BinaryExpression
 	ParenthesisedExpression
