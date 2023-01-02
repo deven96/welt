@@ -11,6 +11,7 @@ type ExpressionSyntax interface {
 
 type LiteralExpressionSyntax struct {
 	LiteralToken SyntaxToken
+	Value        interface{}
 }
 
 func (es LiteralExpressionSyntax) Kind() SyntaxKind {

@@ -16,6 +16,19 @@ const (
 	BinaryExpression
 )
 
+func (kind boundNodeKind) String() string {
+	switch kind {
+	case UnaryExpression:
+		return "BoundUnaryExpression"
+	case LiteralExpression:
+		return "BoundLiteralExpression"
+	case BinaryExpression:
+		return "BoundBinaryExpression"
+	default:
+		return "UnknownBoundKind"
+	}
+}
+
 type BoundNode interface {
 	Kind() boundNodeKind
 }

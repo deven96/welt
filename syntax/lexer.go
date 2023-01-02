@@ -3,6 +3,7 @@ package syntax
 import (
 	"fmt"
 	"strconv"
+	"unicode"
 )
 
 type lexer struct {
@@ -11,15 +12,29 @@ type lexer struct {
 	diagnostics []string
 }
 
-func (lex lexer) current() string {
-	if lex.position >= len(lex.Text) {
-		return `\0`
+func IsLetter(s string) bool {
+	for _, r := range s {
+		if !unicode.IsLetter(r) {
+			return false
+		}
 	}
-	return string(lex.Text[lex.position])
+	return true
+}
+
+func (lex lexer) current() string {
+	return lex.peek(0)
 }
 
 func (lex *lexer) next() {
 	lex.position++
+}
+
+func (lex lexer) peek(offset int) string {
+	index := lex.position + offset
+	if index >= len(lex.Text) {
+		return `\0`
+	}
+	return string(lex.Text[index])
 }
 
 // Lex : reads in the next token needed
@@ -73,6 +88,24 @@ func (lex *lexer) Lex() SyntaxToken {
 			Text:     text,
 		}
 	}
+
+	if IsLetter(lex.current()) {
+		for {
+			if IsLetter(lex.current()) {
+				lex.next()
+			} else {
+				break
+			}
+		}
+
+		text := lex.Text[start:lex.position]
+		return SyntaxToken{
+			Kind_:    KeyWordRecognition(text),
+			position: start,
+			Text:     text,
+		}
+	}
+
 	current := lex.current()
 	lex.next()
 
@@ -113,6 +146,34 @@ func (lex *lexer) Lex() SyntaxToken {
 			position: lex.position - 1,
 			Text:     "(",
 		}
+	case "!":
+		return SyntaxToken{
+			Kind_:    BangToken,
+			position: lex.position - 1,
+			Text:     "!",
+		}
+	case "&":
+		if lex.current() == "&" {
+			// move token once more to the next
+			lex.next()
+			return SyntaxToken{
+				Kind_:    DoubleAmpersandToken,
+				position: lex.position - 2,
+				Text:     "&&",
+			}
+		}
+		fallthrough
+	case "|":
+		if lex.current() == "|" {
+			// move token once more to the next
+			lex.next()
+			return SyntaxToken{
+				Kind_:    DoublePipeToken,
+				position: lex.position - 2,
+				Text:     "||",
+			}
+		}
+		fallthrough
 	default:
 		lex.diagnostics = append(lex.diagnostics, fmt.Sprintf("ERROR: bad character input: %s", lex.current()))
 		return SyntaxToken{

@@ -18,6 +18,14 @@ const (
 	StarToken
 	ForwardSlashToken
 
+	// Identifier Token
+	IdentifierToken
+
+	// Boolean Tokens
+	DoubleAmpersandToken
+	DoublePipeToken
+	BangToken
+
 	// Parenthesis Tokens
 	OpenParenthesisToken
 	CloseParenthesisToken
@@ -27,6 +35,10 @@ const (
 	BinaryExpression
 	ParenthesisedExpression
 	UnaryExpression
+
+	// Keywords
+	FalseKeyWord
+	TrueKeyWord
 )
 
 func (i SyntaxKind) String() string {
@@ -47,6 +59,14 @@ func (i SyntaxKind) String() string {
 		return "OpenParenthesis"
 	case CloseParenthesisToken:
 		return "CloseParenthesis"
+	case IdentifierToken:
+		return "Identifier"
+	case DoubleAmpersandToken:
+		return "DoubleAmpersand"
+	case DoublePipeToken:
+		return "DoublePipe"
+	case BangToken:
+		return "Bang"
 	case BinaryExpression:
 		return "BinaryExpression"
 	case LiteralExpression:
@@ -55,6 +75,10 @@ func (i SyntaxKind) String() string {
 		return "UnaryExpression"
 	case ParenthesisedExpression:
 		return "ParenthesisedExpression"
+	case TrueKeyWord:
+		return "TrueKeyword"
+	case FalseKeyWord:
+		return "FalseKeyword"
 	case NewLineToken:
 		return "NewLine"
 	case EndOfFileToken:
@@ -65,21 +89,25 @@ func (i SyntaxKind) String() string {
 	return "Unknown"
 }
 
-func (kind SyntaxKind) getBinaryOperatorPrecedence() int {
+func (kind SyntaxKind) getUnaryOperatorPrecedence() int {
 	switch kind {
-	case StarToken, ForwardSlashToken:
-		return 2
-	case PlusToken, MinusToken:
-		return 1
+	case PlusToken, MinusToken, BangToken:
+		return 5
 	default:
 		return 0
 	}
 }
 
-func (kind SyntaxKind) getUnaryOperatorPrecedence() int {
+func (kind SyntaxKind) getBinaryOperatorPrecedence() int {
 	switch kind {
+	case StarToken, ForwardSlashToken:
+		return 4
 	case PlusToken, MinusToken:
 		return 3
+	case DoubleAmpersandToken:
+		return 2
+	case DoublePipeToken:
+		return 1
 	default:
 		return 0
 	}

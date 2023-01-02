@@ -54,7 +54,9 @@ func (p *Parser) Parse() SyntaxTree {
 }
 
 func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
-	if p.Current().Kind() == OpenParenthesisToken {
+	currentKind := p.Current().Kind()
+	switch currentKind {
+	case OpenParenthesisToken:
 		left := p.NextToken()
 		expression := p.parseExpression(0)
 		right := p.matchToken(CloseParenthesisToken)
@@ -63,9 +65,18 @@ func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
 			Expression:            expression,
 			CloseParenthesisToken: right,
 		}
+	case TrueKeyWord, FalseKeyWord:
+		keyWordToken := p.NextToken()
+		value := currentKind == TrueKeyWord
+		return LiteralExpressionSyntax{
+			LiteralToken: keyWordToken,
+			Value:        value,
+		}
+	default:
+		numberToken := p.matchToken(NumberToken)
+		value := numberToken.Value.(int)
+		return LiteralExpressionSyntax{LiteralToken: numberToken, Value: value}
 	}
-	numberToken := p.matchToken(NumberToken)
-	return LiteralExpressionSyntax{LiteralToken: numberToken}
 }
 
 func (p *Parser) parseExpression(parentPrecendence int) ExpressionSyntax {

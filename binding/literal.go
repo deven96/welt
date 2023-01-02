@@ -20,8 +20,10 @@ func (expression BoundLiteralExpression) Type() reflect.Type {
 }
 
 func (b *Binder) BindLiteral(input syntax.LiteralExpressionSyntax) BoundExpression {
-	value, isInt := input.LiteralToken.Value.(int)
-	if !isInt {
+	var value interface{}
+	if input.Value != nil {
+		value = input.Value
+	} else {
 		value = 0
 	}
 	return BoundLiteralExpression{
