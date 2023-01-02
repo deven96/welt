@@ -32,15 +32,16 @@ func (e Evaluator) evaluateExpression(node parser.ExpressionSyntax) int {
 
 		operatorKind := broot.Operator.Kind()
 
-		if operatorKind == parser.PlusToken {
+		switch operatorKind {
+		case parser.PlusToken:
 			return left + right
-		} else if operatorKind == parser.MinusToken {
+		case parser.MinusToken:
 			return left - right
-		} else if operatorKind == parser.StarToken {
+		case parser.StarToken:
 			return left * right
-		} else if operatorKind == parser.ForwardSlashToken {
+		case parser.ForwardSlashToken:
 			return left / right
-		} else {
+		default:
 			panic(fmt.Sprintf("Unexpected binary expression %s", operatorKind))
 		}
 	}

@@ -72,54 +72,54 @@ func (lex *lexer) NextToken() SyntaxToken {
 			position: start,
 			Text:     text,
 		}
-	} else if lex.current() == "+" {
-		lex.next()
+	}
+	current := lex.current()
+	lex.next()
+
+	switch current {
+	case "+":
 		return SyntaxToken{
 			Kind_:    PlusToken,
 			position: lex.position - 1,
 			Text:     "+",
 		}
-	} else if lex.current() == "-" {
-		lex.next()
+	case "-":
 		return SyntaxToken{
 			Kind_:    MinusToken,
 			position: lex.position - 1,
 			Text:     "-",
 		}
-	} else if lex.current() == "*" {
-		lex.next()
+	case "*":
 		return SyntaxToken{
 			Kind_:    StarToken,
 			position: lex.position - 1,
 			Text:     "*",
 		}
-	} else if lex.current() == "/" {
-		lex.next()
+	case "/":
 		return SyntaxToken{
 			Kind_:    ForwardSlashToken,
 			position: lex.position - 1,
 			Text:     "/",
 		}
-	} else if lex.current() == "(" {
-		lex.next()
+	case "(":
 		return SyntaxToken{
 			Kind_:    OpenParenthesisToken,
 			position: lex.position - 1,
 			Text:     "(",
 		}
-	} else if lex.current() == ")" {
-		lex.next()
+	case ")":
 		return SyntaxToken{
 			Kind_:    CloseParenthesisToken,
 			position: lex.position - 1,
-			Text:     ")",
+			Text:     "(",
+		}
+	default:
+		lex.diagnostics = append(lex.diagnostics, fmt.Sprintf("ERROR: bad character input: %s", lex.current()))
+		return SyntaxToken{
+			Kind_:    BadToken,
+			position: lex.position - 1,
+			Text:     string(lex.Text[lex.position-1]),
 		}
 	}
-	lex.diagnostics = append(lex.diagnostics, fmt.Sprintf("ERROR: bad character input: %s", lex.current()))
-	lex.next()
-	return SyntaxToken{
-		Kind_:    BadToken,
-		position: lex.position - 1,
-		Text:     string(lex.Text[lex.position-1]),
-	}
+
 }
