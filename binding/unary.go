@@ -18,7 +18,7 @@ func (expression BoundUnaryExpression) Kind() boundNodeKind {
 }
 
 func (expression BoundUnaryExpression) Type() reflect.Type {
-	return expression.Operand.Type()
+	return expression.Operator.OperandType
 }
 
 func (b *Binder) BindUnary(input syntax.UnaryExpressionSyntax) BoundExpression {

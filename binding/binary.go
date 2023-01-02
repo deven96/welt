@@ -19,7 +19,7 @@ func (expression BoundBinaryExpression) Kind() boundNodeKind {
 }
 
 func (expression BoundBinaryExpression) Type() reflect.Type {
-	return expression.Left.Type()
+	return expression.Operator.ResultType
 }
 
 func (b *Binder) BindBinary(input syntax.BinaryExpressionSyntax) BoundExpression {
