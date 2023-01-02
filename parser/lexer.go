@@ -22,8 +22,8 @@ func (lex *lexer) next() {
 	lex.position++
 }
 
-// NextToken : reads in the next token needed
-func (lex *lexer) NextToken() SyntaxToken {
+// Lex : reads in the next token needed
+func (lex *lexer) Lex() SyntaxToken {
 	// + - * /
 	// numbers
 	// <whitespace>

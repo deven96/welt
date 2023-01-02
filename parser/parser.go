@@ -13,7 +13,7 @@ func NewParser(text string) Parser {
 	lexer := lexer{Text: text}
 	tokens := []SyntaxToken{}
 	for {
-		token := lexer.NextToken()
+		token := lexer.Lex()
 		if token.Kind_ != WhitespaceToken && token.Kind_ != BadToken {
 			tokens = append(tokens, token)
 		}
