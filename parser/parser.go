@@ -44,7 +44,7 @@ func (p *Parser) matchToken(kind SyntaxKind) SyntaxToken {
 }
 
 func (p *Parser) Parse() SyntaxTree {
-	expression := p.parseTerm()
+	expression := p.parseExpression(0)
 	endOfFileToken := p.matchToken(EndOfFileToken)
 	return SyntaxTree{
 		diagnostics:    p.diagnostics,
@@ -56,7 +56,7 @@ func (p *Parser) Parse() SyntaxTree {
 func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
 	if p.Current().Kind() == OpenParenthesisToken {
 		left := p.NextToken()
-		expression := p.parseTerm()
+		expression := p.parseExpression(0)
 		right := p.matchToken(CloseParenthesisToken)
 		return ParenthesisedExpressionSyntax{
 			OpenParenthesisToken:  left,
@@ -68,25 +68,15 @@ func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
 	return LiteralExpressionSyntax{LiteralToken: numberToken}
 }
 
-func (p *Parser) parseTerm() ExpressionSyntax {
-	left := p.parseFactor()
-	for p.Current().Kind().isBinaryTermOperator() {
-		operatorToken := p.NextToken()
-		right := p.parseFactor()
-		left = BinaryExpressionSyntax{
-			Left:     left,
-			Operator: operatorToken,
-			Right:    right,
-		}
-	}
-	return left
-}
-
-func (p *Parser) parseFactor() ExpressionSyntax {
+func (p *Parser) parseExpression(parentPrecendence int) ExpressionSyntax {
 	left := p.parsePrimaryExpression()
-	for p.Current().Kind().isBinaryFactorOperator() {
+	for {
+		precedence := p.Current().Kind().getBinaryOperatorPrecedence()
+		if precedence == 0 || precedence <= parentPrecendence {
+			break
+		}
 		operatorToken := p.NextToken()
-		right := p.parsePrimaryExpression()
+		right := p.parseExpression(precedence)
 		left = BinaryExpressionSyntax{
 			Left:     left,
 			Operator: operatorToken,

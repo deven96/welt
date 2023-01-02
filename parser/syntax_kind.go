@@ -62,16 +62,13 @@ func (i SyntaxKind) String() string {
 	return "Unknown"
 }
 
-func (kind SyntaxKind) isBinaryTermOperator() bool {
-	if kind == PlusToken || kind == MinusToken {
-		return true
+func (kind SyntaxKind) getBinaryOperatorPrecedence() int {
+	switch kind {
+	case StarToken, ForwardSlashToken:
+		return 2
+	case PlusToken, MinusToken:
+		return 1
+	default:
+		return 0
 	}
-	return false
-}
-
-func (kind SyntaxKind) isBinaryFactorOperator() bool {
-	if kind == StarToken || kind == ForwardSlashToken {
-		return true
-	}
-	return false
 }
