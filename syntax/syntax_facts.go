@@ -22,7 +22,7 @@ func (kind SyntaxKind) getUnaryOperatorPrecedence() int {
 
 func (kind SyntaxKind) getBinaryOperatorPrecedence() int {
 	switch kind {
-	case StarToken, ForwardSlashToken:
+	case StarToken, ForwardSlashToken, ModuloToken:
 		return 5
 	case PlusToken, MinusToken:
 		return 4

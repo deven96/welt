@@ -17,6 +17,7 @@ const (
 	MinusToken
 	StarToken
 	ForwardSlashToken
+	ModuloToken
 
 	// Identifier Token
 	IdentifierToken
@@ -57,6 +58,8 @@ func (i SyntaxKind) String() string {
 		return "Star"
 	case ForwardSlashToken:
 		return "ForwardSlash"
+	case ModuloToken:
+		return "Modulo"
 	case OpenParenthesisToken:
 		return "OpenParenthesis"
 	case CloseParenthesisToken:

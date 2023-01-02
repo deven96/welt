@@ -25,6 +25,10 @@ func (e Evaluator) evaluateExpression(node binding.BoundExpression) interface{} 
 	if isLiteralExpression {
 		return nroot.Value
 	}
+	proot, isParenthesisExpression := node.(binding.BoundParenthesisedLiteralExpression)
+	if isParenthesisExpression {
+		return e.evaluateExpression(proot.Expression)
+	}
 	uroot, isUnaryExpression := node.(binding.BoundUnaryExpression)
 	if isUnaryExpression {
 		operand := e.evaluateExpression(uroot.Operand)
@@ -57,6 +61,8 @@ func (e Evaluator) evaluateExpression(node binding.BoundExpression) interface{} 
 			return left.(int) * right.(int)
 		case binding.Division:
 			return left.(int) / right.(int)
+		case binding.Modulus:
+			return left.(int) % right.(int)
 		case binding.LogicalAnd:
 			return left.(bool) && right.(bool)
 		case binding.LogicalOr:

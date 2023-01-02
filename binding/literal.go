@@ -30,3 +30,23 @@ func (b *Binder) BindLiteral(input syntax.LiteralExpressionSyntax) BoundExpressi
 		Value: value,
 	}
 }
+
+// BoundParenthesisedLiteralExpression: represents a literal expression in parenthesis
+type BoundParenthesisedLiteralExpression struct {
+	Expression BoundExpression
+}
+
+func (expression BoundParenthesisedLiteralExpression) Kind() boundNodeKind {
+	return LiteralExpression
+}
+
+func (expression BoundParenthesisedLiteralExpression) Type() reflect.Type {
+	return expression.Expression.Type()
+}
+
+func (b *Binder) BindParenthesisedLiteral(input syntax.ParenthesisedExpressionSyntax) BoundExpression {
+	expression := b.BindExpression(input.Expression)
+	return BoundParenthesisedLiteralExpression{
+		Expression: expression,
+	}
+}

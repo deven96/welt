@@ -134,6 +134,12 @@ func (lex *lexer) Lex() SyntaxToken {
 			position: lex.position - 1,
 			Text:     "/",
 		}
+	case "%":
+		return SyntaxToken{
+			Kind_:    ModuloToken,
+			position: lex.position - 1,
+			Text:     "%",
+		}
 	case "(":
 		return SyntaxToken{
 			Kind_:    OpenParenthesisToken,
