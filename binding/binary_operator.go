@@ -19,6 +19,8 @@ const (
 	// Logical operators
 	LogicalAnd
 	LogicalOr
+	LogicalEquals
+	LogicalNotEquals
 )
 
 func (kind boundBinaryOperatorKind) String() string {
@@ -35,6 +37,10 @@ func (kind boundBinaryOperatorKind) String() string {
 		return "LogicalAnd"
 	case LogicalOr:
 		return "LogicalOr"
+	case LogicalEquals:
+		return "LogicalEquals"
+	case LogicalNotEquals:
+		return "LogicalNotEquals"
 	default:
 		return "Unknown"
 	}
@@ -55,6 +61,10 @@ func binaryOperations() []boundBinaryOperator {
 		{syntax.PlusToken, Addition, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
 		{syntax.MinusToken, Addition, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
 		{syntax.StarToken, Multiplication, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
+		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(b)},
+		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(b)},
+		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
+		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
 		{syntax.ForwardSlashToken, Addition, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
 		{syntax.DoubleAmpersandToken, LogicalAnd, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
 		{syntax.DoublePipeToken, LogicalOr, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},

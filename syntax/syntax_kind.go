@@ -24,7 +24,9 @@ const (
 	// Boolean Tokens
 	DoubleAmpersandToken
 	DoublePipeToken
+	DoubleEqualToken
 	BangToken
+	BangEqualToken
 
 	// Parenthesis Tokens
 	OpenParenthesisToken
@@ -65,6 +67,8 @@ func (i SyntaxKind) String() string {
 		return "DoubleAmpersand"
 	case DoublePipeToken:
 		return "DoublePipe"
+	case DoubleEqualToken:
+		return "DoubleEqual"
 	case BangToken:
 		return "Bang"
 	case BinaryExpression:
@@ -92,7 +96,7 @@ func (i SyntaxKind) String() string {
 func (kind SyntaxKind) getUnaryOperatorPrecedence() int {
 	switch kind {
 	case PlusToken, MinusToken, BangToken:
-		return 5
+		return 6
 	default:
 		return 0
 	}
@@ -101,8 +105,10 @@ func (kind SyntaxKind) getUnaryOperatorPrecedence() int {
 func (kind SyntaxKind) getBinaryOperatorPrecedence() int {
 	switch kind {
 	case StarToken, ForwardSlashToken:
-		return 4
+		return 5
 	case PlusToken, MinusToken:
+		return 4
+	case DoubleEqualToken, BangEqualToken:
 		return 3
 	case DoubleAmpersandToken:
 		return 2

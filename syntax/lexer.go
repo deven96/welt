@@ -147,6 +147,15 @@ func (lex *lexer) Lex() SyntaxToken {
 			Text:     "(",
 		}
 	case "!":
+		if lex.current() == "=" {
+			// move token once more to the next
+			lex.next()
+			return SyntaxToken{
+				Kind_:    BangEqualToken,
+				position: lex.position - 2,
+				Text:     "!=",
+			}
+		}
 		return SyntaxToken{
 			Kind_:    BangToken,
 			position: lex.position - 1,
@@ -171,6 +180,17 @@ func (lex *lexer) Lex() SyntaxToken {
 				Kind_:    DoublePipeToken,
 				position: lex.position - 2,
 				Text:     "||",
+			}
+		}
+		fallthrough
+	case "=":
+		if lex.current() == "=" {
+			// move token once more to the next
+			lex.next()
+			return SyntaxToken{
+				Kind_:    DoubleEqualToken,
+				position: lex.position - 2,
+				Text:     "==",
 			}
 		}
 		fallthrough
