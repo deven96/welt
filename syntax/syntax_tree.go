@@ -1,4 +1,4 @@
-package parser
+package syntax
 
 type SyntaxTree struct {
 	diagnostics    []string

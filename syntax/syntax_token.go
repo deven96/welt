@@ -1,4 +1,4 @@
-package parser
+package syntax
 
 type SyntaxToken struct {
 	Kind_    SyntaxKind

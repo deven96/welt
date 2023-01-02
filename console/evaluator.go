@@ -3,14 +3,14 @@ package console
 import (
 	"fmt"
 
-	"github.com/deven96/welt/parser"
+	"github.com/deven96/welt/syntax"
 )
 
 type Evaluator struct {
-	root parser.ExpressionSyntax
+	root syntax.ExpressionSyntax
 }
 
-func NewEvaluator(expression parser.ExpressionSyntax) Evaluator {
+func NewEvaluator(expression syntax.ExpressionSyntax) Evaluator {
 	return Evaluator{
 		root: expression,
 	}
@@ -20,26 +20,26 @@ func (e Evaluator) Evaluate() int {
 	return e.evaluateExpression(e.root)
 }
 
-func (e Evaluator) evaluateExpression(node parser.ExpressionSyntax) int {
-	nroot, isLiteralExpression := node.(parser.LiteralExpressionSyntax)
+func (e Evaluator) evaluateExpression(node syntax.ExpressionSyntax) int {
+	nroot, isLiteralExpression := node.(syntax.LiteralExpressionSyntax)
 	if isLiteralExpression {
 		return nroot.LiteralToken.Value.(int)
 	}
-	uroot, isUnaryExpression := node.(parser.UnaryExpressionSyntax)
+	uroot, isUnaryExpression := node.(syntax.UnaryExpressionSyntax)
 	if isUnaryExpression {
 		operand := e.evaluateExpression(uroot.Operand)
 
 		switch uroot.Operator.Kind() {
-		case parser.PlusToken:
+		case syntax.PlusToken:
 			return operand
-		case parser.MinusToken:
+		case syntax.MinusToken:
 			return -operand
 		default:
 			panic(fmt.Sprintf("Unexpected unary operator %s", uroot.Operator.Kind()))
 		}
 	}
 
-	broot, isBinaryExpression := node.(parser.BinaryExpressionSyntax)
+	broot, isBinaryExpression := node.(syntax.BinaryExpressionSyntax)
 	if isBinaryExpression {
 		left := e.evaluateExpression(broot.Left)
 		right := e.evaluateExpression(broot.Right)
@@ -47,20 +47,20 @@ func (e Evaluator) evaluateExpression(node parser.ExpressionSyntax) int {
 		operatorKind := broot.Operator.Kind()
 
 		switch operatorKind {
-		case parser.PlusToken:
+		case syntax.PlusToken:
 			return left + right
-		case parser.MinusToken:
+		case syntax.MinusToken:
 			return left - right
-		case parser.StarToken:
+		case syntax.StarToken:
 			return left * right
-		case parser.ForwardSlashToken:
+		case syntax.ForwardSlashToken:
 			return left / right
 		default:
 			panic(fmt.Sprintf("Unexpected binary expression %s", operatorKind))
 		}
 	}
 
-	proot, isParenthesisedExpression := node.(parser.ParenthesisedExpressionSyntax)
+	proot, isParenthesisedExpression := node.(syntax.ParenthesisedExpressionSyntax)
 	if isParenthesisedExpression {
 		return e.evaluateExpression(proot.Expression)
 	}

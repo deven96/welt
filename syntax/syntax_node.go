@@ -1,4 +1,4 @@
-package parser
+package syntax
 
 type SyntaxNode interface {
 	Kind() SyntaxKind

@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/deven96/welt/parser"
+	"github.com/deven96/welt/syntax"
 	"github.com/fatih/color"
 )
 
@@ -37,7 +37,7 @@ func Console() {
 			break
 		}
 
-		syntaxTree := parser.SyntaxTreeParse(line)
+		syntaxTree := syntax.SyntaxTreeParse(line)
 		if showTree {
 			color.Set(color.FgWhite, color.Bold)
 			prettyPrint(PrettyPrint{node: syntaxTree.Root, isLast: true})
