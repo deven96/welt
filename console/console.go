@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/deven96/welt/binding"
+	"github.com/deven96/welt/compiler"
 	"github.com/deven96/welt/syntax"
 	"github.com/fatih/color"
 )
@@ -39,25 +39,22 @@ func Console() {
 		}
 
 		syntaxTree := syntax.SyntaxTreeParse(line)
-		binderObj := binding.Binder{}
-		boundExpression := binderObj.BindExpression(syntaxTree.Root)
-		diagnostics := append(syntaxTree.Diagnostics(), binderObj.Diagnostics()...)
+		compilation := compiler.Compilation{SyntaxTree: syntaxTree}
+		compilationResult := compilation.Evaluate()
 		if showTree {
 			color.Set(color.FgWhite, color.Bold)
 			prettyPrint(PrettyPrint{node: syntaxTree.Root, isLast: true})
 			color.Unset()
 		}
 
-		if len(diagnostics) > 0 {
+		if len(compilationResult.Diagnostics()) > 0 {
 			color.Set(color.FgRed, color.Bold)
-			for _, err := range diagnostics {
+			for _, err := range compilationResult.Diagnostics() {
 				fmt.Println(err)
 			}
 			color.Unset()
 		} else {
-			evaluator := NewEvaluator(boundExpression)
-			result := evaluator.Evaluate()
-			fmt.Println(result)
+			fmt.Println(compilationResult.Result())
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package console
+package compiler
 
 import (
 	"fmt"
@@ -10,13 +10,13 @@ type Evaluator struct {
 	root binding.BoundExpression
 }
 
-func NewEvaluator(expression binding.BoundExpression) Evaluator {
+func newEvaluator(expression binding.BoundExpression) Evaluator {
 	return Evaluator{
 		root: expression,
 	}
 }
 
-func (e Evaluator) Evaluate() interface{} {
+func (e Evaluator) evaluate() interface{} {
 	return e.evaluateExpression(e.root)
 }
 

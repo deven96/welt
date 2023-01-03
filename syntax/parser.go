@@ -74,8 +74,12 @@ func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
 		}
 	default:
 		numberToken := p.matchToken(NumberToken)
-		value := numberToken.Value.(int)
-		return LiteralExpressionSyntax{LiteralToken: numberToken, Value: value}
+		if numberToken.Value != nil {
+			value := numberToken.Value.(int)
+			return LiteralExpressionSyntax{LiteralToken: numberToken, Value: value}
+		} else {
+			return LiteralExpressionSyntax{LiteralToken: numberToken}
+		}
 	}
 }
 
