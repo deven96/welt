@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/deven96/welt/diagnostic"
 	"github.com/deven96/welt/syntax"
 )
 
@@ -39,10 +40,10 @@ type BoundExpression interface {
 }
 
 type Binder struct {
-	diagnostics []string
+	diagnostics diagnostic.DiagnosticsBag
 }
 
-func (b Binder) Diagnostics() []string {
+func (b Binder) Diagnostics() diagnostic.DiagnosticsBag {
 	return b.diagnostics
 }
 
@@ -59,5 +60,11 @@ func (b *Binder) BindExpression(syntaxExpression syntax.ExpressionSyntax) BoundE
 		return b.BindParenthesisedLiteral(syntaxExpression.(syntax.ParenthesisedExpressionSyntax))
 	default:
 		panic(fmt.Sprintf("Unexpected syntax %s", kind))
+	}
+}
+
+func NewBinder() Binder {
+	return Binder{
+		diagnostics: []diagnostic.Diagnostic{},
 	}
 }

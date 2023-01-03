@@ -2,7 +2,6 @@ package binding
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 
 	"github.com/deven96/welt/syntax"
@@ -83,5 +82,5 @@ func GetBoundBinaryOperator(kind syntax.SyntaxKind, leftType, rightType reflect.
 			return &operator, nil
 		}
 	}
-	return nil, errors.New(fmt.Sprintf("Binary operator %s not implemented over %s & %s", kind, leftType, rightType))
+	return nil, errors.New("")
 }

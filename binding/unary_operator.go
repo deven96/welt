@@ -2,7 +2,6 @@ package binding
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 
 	"github.com/deven96/welt/syntax"
@@ -53,5 +52,5 @@ func GetBoundUnaryOperator(kind syntax.SyntaxKind, operandType reflect.Type) (*b
 			return &operator, nil
 		}
 	}
-	return nil, errors.New(fmt.Sprintf("Unary operator %s not implemented over %s", kind, operandType))
+	return nil, errors.New("")
 }

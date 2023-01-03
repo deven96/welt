@@ -1,11 +1,13 @@
 package syntax
 
-import "fmt"
+import (
+	"github.com/deven96/welt/diagnostic"
+)
 
 type Parser struct {
 	Tokens      []SyntaxToken
 	position    int
-	diagnostics []string
+	diagnostics diagnostic.DiagnosticsBag
 }
 
 func NewParser(text string) Parser {
@@ -22,7 +24,7 @@ func NewParser(text string) Parser {
 		}
 	}
 	p.Tokens = tokens
-	p.diagnostics = append(p.diagnostics, lexer.diagnostics...)
+	p.diagnostics.AddBag(lexer.diagnostics)
 	return p
 }
 
@@ -36,7 +38,7 @@ func (p *Parser) matchToken(kind SyntaxKind) SyntaxToken {
 	if p.Current().Kind_ == kind {
 		return p.NextToken()
 	}
-	p.diagnostics = append(p.diagnostics, fmt.Sprintf("ERROR: Unexpected token <%s>, expected %s", p.Current().Kind(), kind))
+	p.diagnostics.ReportUnexpectedToken(p.Current().Span(), kind.String(), p.Current().Kind().String())
 	return SyntaxToken{
 		Kind_:    kind,
 		position: p.Current().position,

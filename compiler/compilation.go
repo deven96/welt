@@ -10,11 +10,11 @@ type Compilation struct {
 }
 
 func (comp Compilation) Evaluate() CompilationResult {
-	binderObj := binding.Binder{}
+	binderObj := binding.NewBinder()
 	boundExpression := binderObj.BindExpression(comp.SyntaxTree.Root)
 	diagnostics := append(comp.SyntaxTree.Diagnostics(), binderObj.Diagnostics()...)
 	if len(diagnostics) >= 1 {
-		return CompilationResult{diagnostics: diagnostics, result: nil}
+		return CompilationResult{diagnostics: diagnostics.ToString(), result: nil}
 	}
 	evaluator := newEvaluator(boundExpression)
 	result := evaluator.evaluate()

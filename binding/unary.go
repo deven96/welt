@@ -1,7 +1,6 @@
 package binding
 
 import (
-	"fmt"
 	"reflect"
 
 	"github.com/deven96/welt/syntax"
@@ -30,6 +29,6 @@ func (b *Binder) BindUnary(input syntax.UnaryExpressionSyntax) BoundExpression {
 			Operand:  boundOperand,
 		}
 	}
-	b.diagnostics = append(b.diagnostics, fmt.Sprintf("Unary operator %s is not defined for %s: %s", input.Operator.Text, boundOperand.Type(), err))
+	b.diagnostics.ReportUndefinedUnaryOperator(input.Operator.Span(), input.Operator.Text, boundOperand.Type())
 	return boundOperand
 }

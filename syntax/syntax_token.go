@@ -1,5 +1,7 @@
 package syntax
 
+import "github.com/deven96/welt/diagnostic"
+
 type SyntaxToken struct {
 	Kind_    SyntaxKind
 	Text     string
@@ -13,4 +15,8 @@ func (st SyntaxToken) Kind() SyntaxKind {
 
 func (st SyntaxToken) Children() []SyntaxNode {
 	return []SyntaxNode{}
+}
+
+func (st SyntaxToken) Span() diagnostic.TextSpan {
+	return diagnostic.TextSpan{Start: st.position, Length: len(st.Text)}
 }

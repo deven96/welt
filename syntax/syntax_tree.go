@@ -1,12 +1,14 @@
 package syntax
 
+import "github.com/deven96/welt/diagnostic"
+
 type SyntaxTree struct {
-	diagnostics    []string
+	diagnostics    diagnostic.DiagnosticsBag
 	Root           ExpressionSyntax
 	endOfFileToken SyntaxToken
 }
 
-func (st SyntaxTree) Diagnostics() []string {
+func (st SyntaxTree) Diagnostics() diagnostic.DiagnosticsBag {
 	return st.diagnostics
 }
 

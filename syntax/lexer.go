@@ -1,15 +1,17 @@
 package syntax
 
 import (
-	"fmt"
+	"reflect"
 	"strconv"
 	"unicode"
+
+	"github.com/deven96/welt/diagnostic"
 )
 
 type lexer struct {
 	Text        string
 	position    int
-	diagnostics []string
+	diagnostics diagnostic.DiagnosticsBag
 }
 
 func IsLetter(s string) bool {
@@ -63,7 +65,8 @@ func (lex *lexer) Lex() SyntaxToken {
 		text := lex.Text[start:lex.position]
 		value, err := strconv.Atoi(text)
 		if err != nil {
-			lex.diagnostics = append(lex.diagnostics, fmt.Sprintf("The number %s is not a valid int", text))
+			var a int
+			lex.diagnostics.ReportInvalidNumber(diagnostic.TextSpan{start, lex.position - start}, text, reflect.TypeOf(a))
 		}
 		return SyntaxToken{
 			Kind_:    NumberToken,
@@ -201,11 +204,12 @@ func (lex *lexer) Lex() SyntaxToken {
 		}
 		fallthrough
 	default:
-		lex.diagnostics = append(lex.diagnostics, fmt.Sprintf("ERROR: bad character input: %s", lex.current()))
+		character := lex.Text[lex.position-1]
+		lex.diagnostics.ReportBadCharacter(lex.position-1, character)
 		return SyntaxToken{
 			Kind_:    BadToken,
 			position: lex.position - 1,
-			Text:     string(lex.Text[lex.position-1]),
+			Text:     string(character),
 		}
 	}
 

@@ -1,7 +1,6 @@
 package binding
 
 import (
-	"fmt"
 	"reflect"
 
 	"github.com/deven96/welt/syntax"
@@ -33,6 +32,6 @@ func (b *Binder) BindBinary(input syntax.BinaryExpressionSyntax) BoundExpression
 			Right:    boundRight,
 		}
 	}
-	b.diagnostics = append(b.diagnostics, fmt.Sprintf("Binary operator %s is not defined for types (%s, %s)", input.Operator.Text, boundLeft.Type(), boundRight.Type()))
+	b.diagnostics.ReportUndefinedBinaryOperator(input.Operator.Span(), input.Operator.Text, boundLeft.Type(), boundRight.Type())
 	return boundLeft
 }
