@@ -4,15 +4,18 @@ import (
 	"fmt"
 
 	"github.com/deven96/welt/binding"
+	"github.com/deven96/welt/variables"
 )
 
 type Evaluator struct {
-	root binding.BoundExpression
+	root      binding.BoundExpression
+	variables *variables.Variables
 }
 
-func newEvaluator(expression binding.BoundExpression) Evaluator {
+func newEvaluator(expression binding.BoundExpression, variables *variables.Variables) Evaluator {
 	return Evaluator{
-		root: expression,
+		root:      expression,
+		variables: variables,
 	}
 }
 
@@ -24,6 +27,17 @@ func (e Evaluator) evaluateExpression(node binding.BoundExpression) interface{} 
 	nroot, isLiteralExpression := node.(binding.BoundLiteralExpression)
 	if isLiteralExpression {
 		return nroot.Value
+	}
+	naroot, isNameExpression := node.(binding.BoundVariableExpression)
+	if isNameExpression {
+		val := (*e.variables)[naroot.Name]
+		return val
+	}
+	aroot, isAssignmentExpression := node.(binding.BoundAssignmentExpression)
+	if isAssignmentExpression {
+		val := e.evaluateExpression(aroot.Right)
+		(*e.variables)[aroot.Name] = val
+		return val
 	}
 	proot, isParenthesisExpression := node.(binding.BoundParenthesisedLiteralExpression)
 	if isParenthesisExpression {
@@ -76,5 +90,5 @@ func (e Evaluator) evaluateExpression(node binding.BoundExpression) interface{} 
 		}
 	}
 
-	panic(fmt.Sprintf("Unexpected node %s", node.Kind()))
+	panic(fmt.Sprintf("Unexpected node %s %v %v", node.Kind(), node, (*e.variables)))
 }

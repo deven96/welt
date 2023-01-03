@@ -202,7 +202,11 @@ func (lex *lexer) Lex() SyntaxToken {
 				Text:     "==",
 			}
 		}
-		fallthrough
+		return SyntaxToken{
+			Kind_:    EqualsToken,
+			position: lex.position - 1,
+			Text:     "=",
+		}
 	default:
 		character := lex.Text[lex.position-1]
 		lex.diagnostics.ReportBadCharacter(lex.position-1, character)

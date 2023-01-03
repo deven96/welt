@@ -46,7 +46,7 @@ func (p *Parser) matchToken(kind SyntaxKind) SyntaxToken {
 }
 
 func (p *Parser) Parse() SyntaxTree {
-	expression := p.parseExpression(0)
+	expression := p.parseAssignmentExpression()
 	endOfFileToken := p.matchToken(EndOfFileToken)
 	return SyntaxTree{
 		diagnostics:    p.diagnostics,
@@ -60,7 +60,7 @@ func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
 	switch currentKind {
 	case OpenParenthesisToken:
 		left := p.NextToken()
-		expression := p.parseExpression(0)
+		expression := p.parseAssignmentExpression()
 		right := p.matchToken(CloseParenthesisToken)
 		return ParenthesisedExpressionSyntax{
 			OpenParenthesisToken:  left,
@@ -74,6 +74,9 @@ func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
 			LiteralToken: keyWordToken,
 			Value:        value,
 		}
+	case IdentifierToken:
+		identifier := p.NextToken()
+		return NameExpressionSyntax{Identifier: identifier}
 	default:
 		numberToken := p.matchToken(NumberToken)
 		if numberToken.Value != nil {
@@ -85,12 +88,26 @@ func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
 	}
 }
 
-func (p *Parser) parseExpression(parentPrecendence int) ExpressionSyntax {
+func (p *Parser) parseAssignmentExpression() ExpressionSyntax {
+	if p.Current().Kind() == IdentifierToken && p.LookAhead().Kind() == EqualsToken {
+		identifier := p.matchToken(IdentifierToken)
+		operator := p.matchToken(EqualsToken)
+		right := p.parseAssignmentExpression()
+		return AssignmentExpressionSyntax{
+			Identifier:  identifier,
+			EqualsToken: operator,
+			Expression:  right,
+		}
+	}
+	return p.parseBinaryExpression(0)
+}
+
+func (p *Parser) parseBinaryExpression(parentPrecendence int) ExpressionSyntax {
 	var left ExpressionSyntax
 	unaryOperatorPrecedence := p.Current().Kind().getUnaryOperatorPrecedence()
 	if unaryOperatorPrecedence != 0 && unaryOperatorPrecedence >= parentPrecendence {
 		operator := p.NextToken()
-		operand := p.parseExpression(unaryOperatorPrecedence)
+		operand := p.parseBinaryExpression(unaryOperatorPrecedence)
 		left = UnaryExpressionSyntax{
 			Operator: operator,
 			Operand:  operand,
@@ -104,7 +121,7 @@ func (p *Parser) parseExpression(parentPrecendence int) ExpressionSyntax {
 			break
 		}
 		operatorToken := p.NextToken()
-		right := p.parseExpression(precedence)
+		right := p.parseBinaryExpression(precedence)
 		left = BinaryExpressionSyntax{
 			Left:     left,
 			Operator: operatorToken,
@@ -124,4 +141,7 @@ func (p Parser) Peek(offset int) SyntaxToken {
 
 func (p Parser) Current() SyntaxToken {
 	return p.Peek(0)
+}
+func (p Parser) LookAhead() SyntaxToken {
+	return p.Peek(1)
 }

@@ -19,8 +19,9 @@ const (
 	ForwardSlashToken
 	ModuloToken
 
-	// Identifier Token
+	// Assignment Tokens
 	IdentifierToken
+	EqualsToken
 
 	// Boolean Tokens
 	DoubleAmpersandToken
@@ -38,6 +39,8 @@ const (
 	BinaryExpression
 	ParenthesisedExpression
 	UnaryExpression
+	NameExpression
+	AssignmentExpression
 
 	// Keywords
 	FalseKeyWord
@@ -66,6 +69,8 @@ func (i SyntaxKind) String() string {
 		return "CloseParenthesis"
 	case IdentifierToken:
 		return "Identifier"
+	case EqualsToken:
+		return "Equals"
 	case DoubleAmpersandToken:
 		return "DoubleAmpersand"
 	case DoublePipeToken:
@@ -74,6 +79,10 @@ func (i SyntaxKind) String() string {
 		return "DoubleEqual"
 	case BangToken:
 		return "Bang"
+	case NameExpression:
+		return "NameExpression"
+	case AssignmentExpression:
+		return "AssignmentExpression"
 	case BinaryExpression:
 		return "BinaryExpression"
 	case LiteralExpression:

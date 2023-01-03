@@ -55,6 +55,16 @@ func (d *DiagnosticsBag) ReportUndefinedBinaryOperator(span TextSpan, operator s
 	d.Report(span, message)
 }
 
+func (d *DiagnosticsBag) ReportUndefinedName(span TextSpan, name string) {
+	message := fmt.Sprintf("Variable %s is not defined", name)
+	d.Report(span, message)
+}
+
+func (d *DiagnosticsBag) ReportUnallowedAssignment(span TextSpan, name string, typ reflect.Type) {
+	message := fmt.Sprintf("Cannot assign %s to type %s", name, typ)
+	d.Report(span, message)
+}
+
 func (d *DiagnosticsBag) AddBag(newBag DiagnosticsBag) {
 	*d = append(*d, newBag...)
 }

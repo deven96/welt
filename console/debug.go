@@ -29,6 +29,11 @@ func prettyPrint(printer PrettyPrint) {
 	if isSyntaxToken && syntaxToken.Value != nil {
 		fmt.Print(" ")
 		fmt.Print(syntaxToken.Value)
+	} else {
+		if isSyntaxToken && syntaxToken.Text != "" {
+			fmt.Print(" ")
+			fmt.Print(syntaxToken.Text)
+		}
 	}
 	fmt.Println()
 
