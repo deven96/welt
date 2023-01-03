@@ -18,5 +18,9 @@ func (st SyntaxToken) Children() []SyntaxNode {
 }
 
 func (st SyntaxToken) Span() diagnostic.TextSpan {
-	return diagnostic.TextSpan{Start: st.position, Length: len(st.Text)}
+	length := len(st.Text)
+	if st.Kind() == EndOfFileToken {
+		length = 1
+	}
+	return diagnostic.TextSpan{Start: st.position, Length: length}
 }

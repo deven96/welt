@@ -47,7 +47,7 @@ func (lex *lexer) Lex() SyntaxToken {
 	if lex.position >= len(lex.Text) {
 		return SyntaxToken{
 			Kind_:    EndOfFileToken,
-			position: lex.position,
+			position: lex.position - 1,
 			Text:     `\0`,
 		}
 	}
@@ -66,7 +66,7 @@ func (lex *lexer) Lex() SyntaxToken {
 		value, err := strconv.Atoi(text)
 		if err != nil {
 			var a int
-			lex.diagnostics.ReportInvalidNumber(diagnostic.TextSpan{start, lex.position - start}, text, reflect.TypeOf(a))
+			lex.diagnostics.ReportInvalidNumber(diagnostic.TextSpan{Start: start, Length: lex.position - start}, text, reflect.TypeOf(a))
 		}
 		return SyntaxToken{
 			Kind_:    NumberToken,

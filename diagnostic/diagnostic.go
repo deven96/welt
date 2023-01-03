@@ -10,6 +10,10 @@ type TextSpan struct {
 	Length int
 }
 
+func (t TextSpan) End() int {
+	return t.Start + t.Length
+}
+
 type Diagnostic struct {
 	Span    TextSpan
 	Message string
@@ -53,12 +57,4 @@ func (d *DiagnosticsBag) ReportUndefinedBinaryOperator(span TextSpan, operator s
 
 func (d *DiagnosticsBag) AddBag(newBag DiagnosticsBag) {
 	*d = append(*d, newBag...)
-}
-
-func (d DiagnosticsBag) ToString() []string {
-	errors := []string{}
-	for _, e := range d {
-		errors = append(errors, fmt.Sprintf("[ERROR] %s", e))
-	}
-	return errors
 }
