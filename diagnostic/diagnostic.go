@@ -60,6 +60,11 @@ func (d *DiagnosticsBag) ReportUndefinedName(span TextSpan, name string) {
 	d.Report(span, message)
 }
 
+func (d *DiagnosticsBag) ReportEOLStringLiteral(span TextSpan, name string) {
+	message := fmt.Sprintf("EOL while scanning string literal %s", name)
+	d.Report(span, message)
+}
+
 func (d *DiagnosticsBag) ReportUnallowedAssignment(span TextSpan, name string, typ reflect.Type) {
 	message := fmt.Sprintf("Cannot assign %s to type %s", name, typ)
 	d.Report(span, message)

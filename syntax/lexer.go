@@ -145,6 +145,9 @@ func (lex *lexer) Lex() SyntaxToken {
 				position: start,
 				Text:     quotedText,
 			}
+		} else {
+			text := lex.Text[start : lex.position+1]
+			lex.diagnostics.ReportEOLStringLiteral(diagnostic.TextSpan{Start: start, Length: lex.position - start + 1}, text)
 		}
 	}
 
