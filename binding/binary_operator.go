@@ -57,17 +57,22 @@ type boundBinaryOperator struct {
 }
 
 func binaryOperations() []boundBinaryOperator {
-	var b bool
 	var a int
+	var b bool
+	var c string
 	operators := []boundBinaryOperator{
 		{syntax.PlusToken, Addition, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
+		{syntax.PlusToken, Addition, reflect.TypeOf(c), reflect.TypeOf(c), reflect.TypeOf(c)},
 		{syntax.MinusToken, Subtraction, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
 		{syntax.StarToken, Multiplication, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
+		{syntax.StarToken, Multiplication, reflect.TypeOf(c), reflect.TypeOf(a), reflect.TypeOf(c)},
 		{syntax.ForwardSlashToken, Division, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
 		{syntax.ModuloToken, Modulus, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
 		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(b)},
-		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(b)},
+		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(c), reflect.TypeOf(c), reflect.TypeOf(b)},
 		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
+		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(b)},
+		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(c), reflect.TypeOf(c), reflect.TypeOf(b)},
 		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
 		{syntax.DoubleAmpersandToken, LogicalAnd, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
 		{syntax.DoublePipeToken, LogicalOr, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},

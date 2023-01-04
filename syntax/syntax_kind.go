@@ -12,6 +12,9 @@ const (
 	// Number Token
 	NumberToken
 
+	// String Token
+	StringToken
+
 	// Arithmetric Token
 	PlusToken
 	MinusToken
@@ -20,7 +23,6 @@ const (
 	ModuloToken
 
 	// Assignment Tokens
-	IdentifierToken
 	EqualsToken
 
 	// Boolean Tokens
@@ -34,10 +36,15 @@ const (
 	OpenParenthesisToken
 	CloseParenthesisToken
 
+	// Identifier Token
+	IdentifierToken
+	QuotedIdentifierToken
+
 	// Expressions
 	LiteralExpression
 	BinaryExpression
 	ParenthesisedExpression
+	QuotedExpression
 	UnaryExpression
 	NameExpression
 	AssignmentExpression
@@ -51,6 +58,8 @@ func (i SyntaxKind) String() string {
 	switch i {
 	case NumberToken:
 		return "Number"
+	case StringToken:
+		return "String"
 	case WhitespaceToken:
 		return "Whitespace"
 	case MinusToken:
@@ -69,6 +78,8 @@ func (i SyntaxKind) String() string {
 		return "CloseParenthesis"
 	case IdentifierToken:
 		return "Identifier"
+	case QuotedIdentifierToken:
+		return "QuotedIdentifier"
 	case EqualsToken:
 		return "Equals"
 	case DoubleAmpersandToken:
@@ -91,6 +102,8 @@ func (i SyntaxKind) String() string {
 		return "UnaryExpression"
 	case ParenthesisedExpression:
 		return "ParenthesisedExpression"
+	case QuotedExpression:
+		return "QuotedExpression"
 	case TrueKeyWord:
 		return "TrueKeyword"
 	case FalseKeyWord:

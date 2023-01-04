@@ -18,6 +18,7 @@ const (
 	BinaryExpression
 	VariableExpression
 	AssignmentExpression
+	StringExpression
 )
 
 func (kind boundNodeKind) String() string {
@@ -32,6 +33,8 @@ func (kind boundNodeKind) String() string {
 		return "BoundVariableExpression"
 	case AssignmentExpression:
 		return "BoundAssignmentExpression"
+	case StringExpression:
+		return "BoundStringExpression"
 	default:
 		return "UnknownBoundKind"
 	}
@@ -60,6 +63,8 @@ func (b *Binder) BindExpression(syntaxExpression syntax.ExpressionSyntax) BoundE
 	switch kind {
 	case syntax.LiteralExpression:
 		return b.BindLiteral(syntaxExpression.(syntax.LiteralExpressionSyntax))
+	case syntax.QuotedExpression:
+		return b.BindString(syntaxExpression.(syntax.QuotedExpressionSyntax))
 	case syntax.UnaryExpression:
 		return b.BindUnary(syntaxExpression.(syntax.UnaryExpressionSyntax))
 	case syntax.BinaryExpression:

@@ -2,6 +2,8 @@ package compiler
 
 import (
 	"fmt"
+	"reflect"
+	"strings"
 
 	"github.com/deven96/welt/binding"
 	"github.com/deven96/welt/variables"
@@ -43,6 +45,10 @@ func (e Evaluator) evaluateExpression(node binding.BoundExpression) interface{} 
 	if isParenthesisExpression {
 		return e.evaluateExpression(proot.Expression)
 	}
+	sroot, isStringExpression := node.(binding.BoundStringExpression)
+	if isStringExpression {
+		return sroot.Value
+	}
 	uroot, isUnaryExpression := node.(binding.BoundUnaryExpression)
 	if isUnaryExpression {
 		operand := e.evaluateExpression(uroot.Operand)
@@ -66,13 +72,28 @@ func (e Evaluator) evaluateExpression(node binding.BoundExpression) interface{} 
 
 		operatorKind := broot.Operator.Kind
 
+		var (
+			intType    int
+			stringType string
+		)
+
 		switch operatorKind {
 		case binding.Addition:
-			return left.(int) + right.(int)
+			if broot.Left.Type() == reflect.TypeOf(intType) && broot.Right.Type() == reflect.TypeOf(intType) {
+				return left.(int) + right.(int)
+			}
+			if broot.Left.Type() == reflect.TypeOf(stringType) && broot.Right.Type() == reflect.TypeOf(stringType) {
+				return left.(string) + right.(string)
+			}
 		case binding.Subtraction:
 			return left.(int) - right.(int)
 		case binding.Multiplication:
-			return left.(int) * right.(int)
+			if broot.Left.Type() == reflect.TypeOf(intType) && broot.Right.Type() == reflect.TypeOf(intType) {
+				return left.(int) * right.(int)
+			}
+			if broot.Left.Type() == reflect.TypeOf(stringType) && broot.Right.Type() == reflect.TypeOf(intType) {
+				return strings.Repeat(left.(string), right.(int))
+			}
 		case binding.Division:
 			return left.(int) / right.(int)
 		case binding.Modulus:

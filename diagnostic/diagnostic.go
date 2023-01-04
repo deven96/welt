@@ -36,7 +36,7 @@ func (d *DiagnosticsBag) ReportInvalidNumber(span TextSpan, number string, typ r
 }
 
 func (d *DiagnosticsBag) ReportBadCharacter(position int, character byte) {
-	message := fmt.Sprintf("Bad character input: %b.", character)
+	message := fmt.Sprintf("Bad character input: %s.", string(character))
 	d.Report(TextSpan{position, 1}, message)
 }
 

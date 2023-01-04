@@ -23,6 +23,17 @@ func IsLetter(s string) bool {
 	return true
 }
 
+func (lex lexer) isUnescapedQuote() bool {
+	if lex.current() == `"` && lex.lookbehind() != `\` {
+		return true
+	}
+	return false
+}
+
+func (lex lexer) lookbehind() string {
+	return lex.peek(-1)
+}
+
 func (lex lexer) current() string {
 	return lex.peek(0)
 }
@@ -34,7 +45,10 @@ func (lex *lexer) next() {
 func (lex lexer) peek(offset int) string {
 	index := lex.position + offset
 	if index >= len(lex.Text) {
-		return `\0`
+		return EndOfFileChar
+	}
+	if index < 0 {
+		index = 0
 	}
 	return string(lex.Text[index])
 }
@@ -48,7 +62,7 @@ func (lex *lexer) Lex() SyntaxToken {
 		return SyntaxToken{
 			Kind_:    EndOfFileToken,
 			position: lex.position - 1,
-			Text:     `\0`,
+			Text:     EndOfFileChar,
 		}
 	}
 	start := lex.position
@@ -106,6 +120,31 @@ func (lex *lexer) Lex() SyntaxToken {
 			Kind_:    KeyWordRecognition(text),
 			position: start,
 			Text:     text,
+		}
+	}
+
+	if lex.isUnescapedQuote() {
+		lex.next()
+		// Is only valid quoted expression when not escaped
+		completed := false
+		for {
+			// Reached end of file or completed
+			if lex.isUnescapedQuote() {
+				completed = true
+			}
+			if lex.position == (len(lex.Text)-1) || completed {
+				break
+			}
+			lex.next()
+		}
+		if completed {
+			lex.next()
+			quotedText := lex.Text[start:lex.position]
+			return SyntaxToken{
+				Kind_:    QuotedIdentifierToken,
+				position: start,
+				Text:     quotedText,
+			}
 		}
 	}
 

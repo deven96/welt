@@ -74,6 +74,9 @@ func (p *Parser) parsePrimaryExpression() ExpressionSyntax {
 			LiteralToken: keyWordToken,
 			Value:        value,
 		}
+	case QuotedIdentifierToken:
+		token := p.NextToken()
+		return QuotedExpressionSyntax{QuotedIdentifier: token}
 	case IdentifierToken:
 		identifier := p.NextToken()
 		return NameExpressionSyntax{Identifier: identifier}

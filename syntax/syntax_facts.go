@@ -1,5 +1,7 @@
 package syntax
 
+const EndOfFileChar string = `\0`
+
 func KeyWordRecognition(input string) SyntaxKind {
 	switch input {
 	case "true":
