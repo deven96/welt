@@ -51,24 +51,7 @@ func Console() {
 
 		if len(compilationResult.Diagnostics()) > 0 {
 			for _, err := range compilationResult.Diagnostics() {
-				fmt.Println()
-				color.Set(color.FgRed, color.Bold)
-				fmt.Println(err.String())
-				color.Unset()
-				prefixChunk := line[0:err.Span.Start]
-				errorChunk := line[err.Span.Start:err.Span.End()]
-				suffixChunk := line[err.Span.End():]
-
-				fmt.Print("    ")
-				fmt.Print(prefixChunk)
-
-				color.Set(color.FgRed, color.Bold)
-				fmt.Print(errorChunk)
-				color.Unset()
-
-				fmt.Print(suffixChunk)
-				fmt.Println()
-
+				printError(line, err)
 			}
 		} else {
 			fmt.Println(compilationResult.Result())
