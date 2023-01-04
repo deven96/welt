@@ -35,12 +35,12 @@ type boundUnaryOperator struct {
 }
 
 func unaryOperations() []boundUnaryOperator {
-	var b bool
-	var a int
+	var intType int
+	var boolType bool
 	operators := []boundUnaryOperator{
-		{syntax.BangToken, LogicalNegation, reflect.TypeOf(b)},
-		{syntax.PlusToken, Identity, reflect.TypeOf(a)},
-		{syntax.MinusToken, Negation, reflect.TypeOf(a)},
+		{syntax.BangToken, LogicalNegation, reflect.TypeOf(boolType)},
+		{syntax.PlusToken, Identity, reflect.TypeOf(intType)},
+		{syntax.MinusToken, Negation, reflect.TypeOf(intType)},
 	}
 	return operators
 }

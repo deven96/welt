@@ -57,25 +57,25 @@ type boundBinaryOperator struct {
 }
 
 func binaryOperations() []boundBinaryOperator {
-	var a int
-	var b bool
-	var c string
+	var intType int
+	var boolType bool
+	var stringType string
 	operators := []boundBinaryOperator{
-		{syntax.PlusToken, Addition, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
-		{syntax.PlusToken, Addition, reflect.TypeOf(c), reflect.TypeOf(c), reflect.TypeOf(c)},
-		{syntax.MinusToken, Subtraction, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
-		{syntax.StarToken, Multiplication, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
-		{syntax.StarToken, Multiplication, reflect.TypeOf(c), reflect.TypeOf(a), reflect.TypeOf(c)},
-		{syntax.ForwardSlashToken, Division, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
-		{syntax.ModuloToken, Modulus, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(a)},
-		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(b)},
-		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(c), reflect.TypeOf(c), reflect.TypeOf(b)},
-		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
-		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(a), reflect.TypeOf(a), reflect.TypeOf(b)},
-		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(c), reflect.TypeOf(c), reflect.TypeOf(b)},
-		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
-		{syntax.DoubleAmpersandToken, LogicalAnd, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
-		{syntax.DoublePipeToken, LogicalOr, reflect.TypeOf(b), reflect.TypeOf(b), reflect.TypeOf(b)},
+		{syntax.PlusToken, Addition, reflect.TypeOf(intType), reflect.TypeOf(intType), reflect.TypeOf(intType)},
+		{syntax.PlusToken, Addition, reflect.TypeOf(stringType), reflect.TypeOf(stringType), reflect.TypeOf(stringType)},
+		{syntax.MinusToken, Subtraction, reflect.TypeOf(intType), reflect.TypeOf(intType), reflect.TypeOf(intType)},
+		{syntax.StarToken, Multiplication, reflect.TypeOf(intType), reflect.TypeOf(intType), reflect.TypeOf(intType)},
+		{syntax.StarToken, Multiplication, reflect.TypeOf(stringType), reflect.TypeOf(intType), reflect.TypeOf(stringType)},
+		{syntax.ForwardSlashToken, Division, reflect.TypeOf(intType), reflect.TypeOf(intType), reflect.TypeOf(intType)},
+		{syntax.ModuloToken, Modulus, reflect.TypeOf(intType), reflect.TypeOf(intType), reflect.TypeOf(intType)},
+		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(intType), reflect.TypeOf(intType), reflect.TypeOf(boolType)},
+		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(stringType), reflect.TypeOf(stringType), reflect.TypeOf(boolType)},
+		{syntax.DoubleEqualToken, LogicalEquals, reflect.TypeOf(boolType), reflect.TypeOf(boolType), reflect.TypeOf(boolType)},
+		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(intType), reflect.TypeOf(intType), reflect.TypeOf(boolType)},
+		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(stringType), reflect.TypeOf(stringType), reflect.TypeOf(boolType)},
+		{syntax.BangEqualToken, LogicalNotEquals, reflect.TypeOf(boolType), reflect.TypeOf(boolType), reflect.TypeOf(boolType)},
+		{syntax.DoubleAmpersandToken, LogicalAnd, reflect.TypeOf(boolType), reflect.TypeOf(boolType), reflect.TypeOf(boolType)},
+		{syntax.DoublePipeToken, LogicalOr, reflect.TypeOf(boolType), reflect.TypeOf(boolType), reflect.TypeOf(boolType)},
 	}
 	return operators
 }
